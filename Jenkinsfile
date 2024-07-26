@@ -50,14 +50,13 @@ pipeline {
 			}
 		}
 		stage ("Prod ENV"){
-			steps{
-				sshagent(credentials:['docker_slave_id']) {
-			    	 	sh "ssh -o StrictHostKeyChecking=no ubuntu@13.201.88.116 sudo docker run  -dit  -p  :8080  daemonaman/java-app:$BUILD_TAG"
-				}
-			}
-		}
-
-
-        	}
-
+		     agent { label 'k8s-agent' }
+		     steps {
+		         withCredentials([sshUserPrivateKey(credentialsId: 'k8s_id', keyFileVariable: 'k8s_key', passphraseVariable: 'k8s_pass', usernameVariable: 'k8s_user')]) {
+                          sh 'kubectl apply -f deployment.yaml'
+		          sh 'kubectl apply -f service.yaml'
+			            }
+            }
+        }
+    }
 }

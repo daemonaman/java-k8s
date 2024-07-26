@@ -1,0 +1,23 @@
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: java-app-deploy
+  name: java-app-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: java-app-deploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: java-app-deploy
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        resources: {}
+status: {}
