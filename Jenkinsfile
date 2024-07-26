@@ -3,7 +3,7 @@ pipeline {
 	stages {
                 stage('pull code from git repo') {
                        steps {
-                                 git branch: 'main', url: 'https://github.com/daemonaman/java-app.git'
+                                 git branch: 'main', url: 'https://github.com/daemonaman/java-k8s.git'
 		       }
 		}
 		stage('build the code') {
