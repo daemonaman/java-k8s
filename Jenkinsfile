@@ -29,14 +29,7 @@ pipeline {
 				}
 			}
 		}
-		stage ("Approval from QAT"){
-			steps {
-				script {
-					Boolean userInput = input(id: 'Proceed1', message: 'Do you want to Promote this build?', parameters: [[$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Please confirm you agree with this']])
-                				echo 'userInput: ' + userInput
-				}
-			}
-		}
+		
 		stage ("Prod ENV"){
 		     agent { label 'k8s-agent' }
 		     steps {
@@ -45,6 +38,12 @@ pipeline {
 		          sh 'kubectl expose deployment java-deploy --type=NodePort --port=80 --targetport=80'
 			            }
             }
+        }
+    }
+}
+ post {
+        always {
+            cleanWs()
         }
     }
 }
