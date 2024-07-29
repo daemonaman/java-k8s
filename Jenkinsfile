@@ -1,6 +1,13 @@
 pipeline {
         agent any
 	stages {
+		stage('remove old containers and images') {
+                       steps {
+                                 sh 'sudo docker stop java-container || true'
+			         sh 'sudo docker rm java-container || true'
+			         sh 'sudo docker rmi daemonaman/java-app:jenkins-java-app-20 || true'
+		       }
+		}
                 stage('pull docker image') {
                        steps {
                                  sh 'sudo docker pull daemonaman/java-app:jenkins-java-app-20'
