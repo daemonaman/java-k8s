@@ -35,7 +35,7 @@ pipeline {
 		     steps {
 		         withCredentials([sshUserPrivateKey(credentialsId: 'k8s_id', keyFileVariable: 'k8s_key', passphraseVariable: 'k8s_pass', usernameVariable: 'k8s_user')]) {
                           sh 'kubectl create deployment java-deploy --image=jenkins-java-app-20'
-		          sh 'kubectl expose deployment java-deploy --type=NodePort --port=80 --targetport=80'
+		          sh 'kubectl expose deployment java-deploy --type=NodePort --port=80 --target-port=80'
 			            }
             }
         }
