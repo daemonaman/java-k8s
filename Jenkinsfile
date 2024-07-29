@@ -24,7 +24,7 @@ pipeline {
 			steps {
 				retry(5) {
 					script {
-						sh 'sudo curl --silent http://13.201.117.124:8090/java-web-app/ | grep -i -E "(india|sr)"'
+						sh 'sudo curl --silent http://43.205.98.75:8090/java-web-app/ | grep -i -E "(india|sr)"'
 					}
 				}
 			}
