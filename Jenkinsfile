@@ -3,7 +3,7 @@ pipeline {
 	stages {
                 stage('pull docker image') {
                        steps {
-                                 sh 'docker pull daemonaman/java-app:jenkins-java-app-20'
+                                 sh 'sudo docker pull daemonaman/java-app:jenkins-java-app-20'
 		       }
 		}
 		stage('testing the build') {
