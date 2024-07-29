@@ -1,42 +1,23 @@
 pipeline {
         agent any
 	stages {
-                stage('pull code from git repo') {
+                stage('pull docker image') {
                        steps {
-                                 git branch: 'main', url: 'https://github.com/daemonaman/java-k8s.git'
-		       }
-		}
-		stage('build the code') {
-                       steps {
-                                 sh 'sudo mvn dependency:purge-local-repository'
-				 sh 'sudo mvn clean package'
-		       }
-		}
-		stage('building docker image') {
-                       steps {
-                                 sh 'sudo docker build -t java-app:$BUILD_TAG .'
-				 sh 'sudo docker tag java-app:$BUILD_TAG daemonaman/java-app:$BUILD_TAG'
-		       }  
-		}
-		stage('push on docker-hub') {
-                       steps {
-                                 withCredentials([string(credentialsId: 'docker_hub_id1', variable: 'docker_hub_pass_var')]) {
-                                 sh 'sudo docker login -u daemonaman -p ${docker_hub_pass_var}'
-				 sh 'sudo docker push daemonaman/java-app:$BUILD_TAG'
-                                 }
+                                 sh 'docker pull daemonaman/java-app:jenkins-java-app-20'
 		       }
 		}
 		stage('testing the build') {
                         steps {
-                                 sh 'sudo docker run -dit --name java-container$BUILD_TAG -p 8090:8080 daemonaman/java-app:$BUILD_TAG'
+                                 sh 'sudo docker run -dit --name java-container -p 8090:8080 daemonaman/java-app:jenkins-java-app-20'
                        }
 
 		}
+		
 		stage ("QAT Testing"){
 			steps {
 				retry(5) {
 					script {
-						sh 'sudo curl --silent http://52.66.169.148:8090/java-web-app/ | grep -i -E "(india|sr)"'
+						sh 'sudo curl --silent http://13.201.117.124:8090/java-web-app/ | grep -i -E "(india|sr)"'
 					}
 				}
 			}
